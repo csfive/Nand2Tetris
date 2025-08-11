@@ -2,12 +2,16 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 
 export const SIDEBAR: DefaultTheme.Sidebar = [
   {
-    items: [{ text: 'Project 1: Boolean Logic', link: '/01/README' }],
+    items: [
+      { text: 'Project 1: Boolean Logic', link: '/01/README' },
+      { text: 'Project 2: Boolean Arithmetic', link: '/02/README' },
+    ],
   },
 ]
 
 export default defineConfig({
   title: 'Nand2Tetris',
+  titleTemplate: ':title',
   description: 'Building a Modern Computer From First Principles',
   cleanUrls: true,
   ignoreDeadLinks: true,
@@ -48,7 +52,7 @@ export default defineConfig({
       {
         defer: '',
         src: 'https://a.mancuoj.me/script.js',
-        'data-website-id': 'c539d121-756d-405e-8402-e3fbb79a812f',
+        'data-website-id': 'e5468703-ff9b-4a0b-8096-3ea4a4bf3068',
       },
     ],
   ],
