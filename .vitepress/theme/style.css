@@ -1,4 +1,11 @@
 :root {
   --vp-font-family-base: 'Libre Caslon Text', serif;
   --vp-font-family-mono: 'DM Mono', monospace;
+  
+  --vp-c-brand-1: #db7336;
+  --vp-c-brand-light: #ff995a;
+  --vp-c-brand-lighter: #ffc17f;
+  --vp-c-brand-dark: #af4e11;
+  --vp-c-brand-darker: #842a00;
+  --vp-c-brand-next: #679e2e;
 }
