@@ -1,0 +1,6 @@
+:root {
+  --vp-font-family-base: 'Libre Caslon Text', serif;
+  --vp-font-family-mono: 'DM Mono', monospace;
+  --vp-code-font-size: 1.1rem;
+  --vp-code-line-height: 1.75rem;
+}
