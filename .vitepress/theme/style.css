@@ -1,13 +1,7 @@
 :root {
   --vp-font-family-base: 'Libre Caslon Text', serif;
   --vp-font-family-mono: 'DM Mono', monospace;
-}
 
-/**
- * Customize default theme styling by overriding CSS variables:
- * https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css
- */
-:root {
   --vp-c-brand-1: rgb(184, 132, 1);
   --vp-c-brand-2: #cea233;
   --vp-c-brand-3: #b4974e;
