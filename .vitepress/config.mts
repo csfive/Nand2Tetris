@@ -44,7 +44,6 @@ export default defineConfig({
   head: getHead(),
 })
 
-
 function getHead() {
   const head: HeadConfig[] = [['link', { rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' }]]
   if (configs.chineseFont) {
