@@ -41,6 +41,7 @@ export default defineConfig({
     logo: '/logo.svg',
     sidebar: configs.sidebar,
     socialLinks: [{ icon: 'github', link: `https://github.com/${configs.repo}` }],
+    outline: 'deep',
     ...getLabel(),
   },
   head: getHead(),
