@@ -33,10 +33,7 @@ featuring a special section on hardware description and simulation tools.
 This chapter focuses on the construction of a family of simple chips called Boolean
 gates. Since Boolean gates are physical implementations of Boolean functions, we
 start with a brief treatment of Boolean algebra. We then show how Boolean gates
-implementing simple Boolean functions can be interconnected to deliver the func-
-tionality of more complex chips. We conclude the background section with a descrip-
-tion of how hardware design is actually done in practice, using software simulation
-tools
+implementing simple Boolean functions can be interconnected to deliver the functionality of more complex chips. We conclude the background section with a description of how hardware design is actually done in practice, using software simulation tools.
 
 ### 1.1.1 Boolean Algebra
 
@@ -83,6 +80,34 @@ value listed in the table’s right column.
   type="manual"
   width="300px"
   caption="Figure 1.1 Truth table representation of a Boolean function (example)."
+/>
+
+ **Canonical Representation** As it turns out, every Boolean function can be expressed
+ using at least one Boolean expression called the canonical representation. Starting
+ with the function’s truth table, we focus on all the rows in which the function has
+ value 1. For each such row, we construct a term created by And-ing together literals
+ (variables or their negations) that fix the values of all the row’s inputs. For example,
+ let us focus on the third row in [figure 1.1](#1.1), where the function’s value is 1.
+ Since the variable values in this row are $x = 0, y = 1, z = 0$, we construct the term
+ $\overline{x} y \overline{z}$. Following the same procedure, we construct the terms
+ $x \overline{y} \overline{z}$ and $xy \overline{z}$ for rows 5 and 7.
+ Now, if we Or-together all these terms (for all the rows where the function has value 1),
+ we get a Boolean expression that is equivalent to the given truth table. Thus the canonical representation of the Boolean function shown in [figure 1.1](#1.1) is
+
+$$
+f(x, y, z) = \overline{x} y \overline{z} + x \overline{y} \overline{z} + xy \overline{z}
+$$
+
+This construction leads to an important conclusion: Every Boolean function, no matter how complex, can be expressed using three Boolean operators only: And, Or, and Not.
+
+**Two-Input Boolean Functions**
+
+<ImageGroup
+  id="1.2"
+  :sources="['/1.2.png']"
+  type="manual"
+  width="450px"
+  caption="Figure 1.2 All the Boolean functions of two variables."
 />
 
 ### 1.1.2 Gate Logic
