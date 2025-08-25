@@ -82,17 +82,17 @@ value listed in the table’s right column.
   caption="Figure 1.1 Truth table representation of a Boolean function (example)."
 />
 
- **Canonical Representation** As it turns out, every Boolean function can be expressed
- using at least one Boolean expression called the canonical representation. Starting
- with the function’s truth table, we focus on all the rows in which the function has
- value 1. For each such row, we construct a term created by And-ing together literals
- (variables or their negations) that fix the values of all the row’s inputs. For example,
- let us focus on the third row in [figure 1.1](#1.1), where the function’s value is 1.
- Since the variable values in this row are $x = 0, y = 1, z = 0$, we construct the term
- $\overline{x} y \overline{z}$. Following the same procedure, we construct the terms
- $x \overline{y} \overline{z}$ and $xy \overline{z}$ for rows 5 and 7.
- Now, if we Or-together all these terms (for all the rows where the function has value 1),
- we get a Boolean expression that is equivalent to the given truth table. Thus the canonical representation of the Boolean function shown in [figure 1.1](#1.1) is
+**Canonical Representation** As it turns out, every Boolean function can be expressed
+using at least one Boolean expression called the canonical representation. Starting
+with the function’s truth table, we focus on all the rows in which the function has
+value 1. For each such row, we construct a term created by And-ing together literals
+(variables or their negations) that fix the values of all the row’s inputs. For example,
+let us focus on the third row in [figure 1.1](#1.1), where the function’s value is 1.
+Since the variable values in this row are $x = 0, y = 1, z = 0$, we construct the term
+$\overline{x} y \overline{z}$. Following the same procedure, we construct the terms
+$x \overline{y} \overline{z}$ and $xy \overline{z}$ for rows 5 and 7.
+Now, if we Or-together all these terms (for all the rows where the function has value 1),
+we get a Boolean expression that is equivalent to the given truth table. Thus the canonical representation of the Boolean function shown in [figure 1.1](#1.1) is
 
 $$
 f(x, y, z) = \overline{x} y \overline{z} + x \overline{y} \overline{z} + xy \overline{z}
