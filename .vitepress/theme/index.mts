@@ -12,5 +12,5 @@ export default {
   enhanceApp({ app }) {
     ImageViewerP(app)
     app.component('ImageGroup', ImageGroup)
-  }
+  },
 }
