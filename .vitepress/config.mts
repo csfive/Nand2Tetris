@@ -2,7 +2,7 @@ import { defineConfig, type DefaultTheme, type HeadConfig } from 'vitepress'
 
 const sidebar: DefaultTheme.Sidebar = [
   {
-    text: 'Project 1: Boolean Logic',
+    text: 'Project 01',
     collapsed: false,
     items: [
       { text: 'Chapter', link: '/01/chapter' },
