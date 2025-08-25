@@ -9,6 +9,22 @@ const sidebar: DefaultTheme.Sidebar = [
       { text: 'Project', link: '/01/project' },
     ],
   },
+  {
+    text: 'Project 02',
+    collapsed: true,
+    items: [
+      { text: 'Chapter', link: '/02/chapter' },
+      { text: 'Project', link: '/02/project' },
+    ],
+  },
+  {
+    text: 'Appendix',
+    collapsed: true,
+    items: [
+      { text: 'Hardware Description Language', link: '/appendix/hdl' },
+      { text: 'The Hack Chip Set', link: '/appendix/thcs' },
+    ],
+  },
 ]
 
 const configs = {

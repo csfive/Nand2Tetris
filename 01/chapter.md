@@ -1,4 +1,4 @@
-# 1 Boolean Logic
+# Chapter 01: Boolean Logic
 
 > Such simple things, And we make of them something so complex it defeats us, Almost.
 >
@@ -51,8 +51,8 @@ Boolean functions is the first step toward constructing computer architectures.
 **Truth Table Representation** The simplest way to specify a Boolean function is to
 enumerate all the possible values of the function’s input variables, along with the
 function’s output for each set of inputs. This is called the truth table representation of
-the function, illustrated in figure 1.1.
-The first three columns of figure 1.1 enumerate all the possible binary values of the
+the function, illustrated in [figure 1.1](#1.1).
+The first three columns of [figure 1.1](#1.1) enumerate all the possible binary values of the
 function’s variables. For each one of the $2^n$ possible tuples $(v_1 \dots v_n)$ (here n = 3), the
 last column gives the value of $f(v_1 \dots v_n)$.
 
@@ -63,7 +63,7 @@ $x$ and $y$ are 1) ‘‘Or’’ ($x$ Or $y$ is 1 exactly when either $x$ or $y
 and ‘‘Not’’ (Not $x$ is 1 exactly when $x$ is 0).
 We will use a common arithmetic-like notation for these operations:
 $x \cdot y$ (or $xy$) means $x$ And $y$, $x + y$ means $x$ Or $y$, and $\overline{x}$ means Not x.
-To illustrate, the function defined in figure 1.1 is equivalently given by the Boolean expression
+To illustrate, the function defined in [figure 1.1](#1.1) is equivalently given by the Boolean expression
 
 $$
 f(x, y, z)=(x + y) \cdot \overline{z}
@@ -76,5 +76,13 @@ The complete verification of the equivalence between the expression and
 the truth table is achieved by evaluating the expression
 on each of the eight possible input combinations, verifying that it yields the same
 value listed in the table’s right column.
+
+<ImageGroup
+  id="1.1"
+  :sources="['/1.1.png']"
+  type="manual"
+  width="300px"
+  caption="Figure 1.1 Truth table representation of a Boolean function (example)."
+/>
 
 ### 1.1.2 Gate Logic
