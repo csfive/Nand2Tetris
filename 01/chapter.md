@@ -1,4 +1,4 @@
-# Chapter 01: Boolean Logic
+# 1 Boolean Logic
 
 > Such simple things, And we make of them something so complex it defeats us, Almost.
 >
