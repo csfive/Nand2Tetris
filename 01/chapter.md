@@ -33,7 +33,9 @@ featuring a special section on hardware description and simulation tools.
 This chapter focuses on the construction of a family of simple chips called Boolean
 gates. Since Boolean gates are physical implementations of Boolean functions, we
 start with a brief treatment of Boolean algebra. We then show how Boolean gates
-implementing simple Boolean functions can be interconnected to deliver the functionality of more complex chips. We conclude the background section with a description of how hardware design is actually done in practice, using software simulation tools.
+implementing simple Boolean functions can be interconnected to deliver the functionality
+of more complex chips. We conclude the background section with a description of how
+hardware design is actually done in practice, using software simulation tools.
 
 ### 1.1.1 Boolean Algebra
 
@@ -59,16 +61,16 @@ Boolean operators that are typically used are ‘‘And’’ ($x$ And $y$ is 1 
 $x$ and $y$ are 1) ‘‘Or’’ ($x$ Or $y$ is 1 exactly when either $x$ or $y$ or both are 1),
 and ‘‘Not’’ (Not $x$ is 1 exactly when $x$ is 0).
 We will use a common arithmetic-like notation for these operations:
-$x \cdot y$ (or $xy$) means $x$ And $y$, $x + y$ means $x$ Or $y$, and $\overline{x}$ means Not x.
+$x \cdot y$ (or $xy$) means $x$ And $y$, $x + y$ means $x$ Or $y$, and $\bar{x}$ means Not x.
 To illustrate, the function defined in [figure 1.1](#1.1) is equivalently given by the Boolean expression
 
 $$
-f(x, y, z)=(x + y) \cdot \overline{z}
+f(x, y, z)=(x + y) \cdot \bar{z}
 $$
 
 For example, let us evaluate this expression on the inputs
 $x = 0, y = 1, z = 0$ (third row in the table). Since $y$ is 1, it follows that
-$x + y = 1$ and thus $1 \cdot \overline{0} = 1 \cdot 1 = 1$.
+$x + y = 1$ and thus $1 \cdot \bar{0} = 1 \cdot 1 = 1$.
 The complete verification of the equivalence between the expression and
 the truth table is achieved by evaluating the expression
 on each of the eight possible input combinations, verifying that it yields the same
@@ -89,18 +91,31 @@ value 1. For each such row, we construct a term created by And-ing together lite
 (variables or their negations) that fix the values of all the row’s inputs. For example,
 let us focus on the third row in [figure 1.1](#1.1), where the function’s value is 1.
 Since the variable values in this row are $x = 0, y = 1, z = 0$, we construct the term
-$\overline{x} y \overline{z}$. Following the same procedure, we construct the terms
-$x \overline{y} \overline{z}$ and $xy \overline{z}$ for rows 5 and 7.
+$\bar{x} y \bar{z}$. Following the same procedure, we construct the terms
+$x \bar{y} \bar{z}$ and $xy \bar{z}$ for rows 5 and 7.
 Now, if we Or-together all these terms (for all the rows where the function has value 1),
-we get a Boolean expression that is equivalent to the given truth table. Thus the canonical representation of the Boolean function shown in [figure 1.1](#1.1) is
+we get a Boolean expression that is equivalent to the given truth table. Thus the canonical
+representation of the Boolean function shown in [figure 1.1](#1.1) is
 
 $$
-f(x, y, z) = \overline{x} y \overline{z} + x \overline{y} \overline{z} + xy \overline{z}
+f(x, y, z) = \bar{x} y \bar{z} + x \bar{y} \bar{z} + xy \bar{z}
 $$
 
-This construction leads to an important conclusion: Every Boolean function, no matter how complex, can be expressed using three Boolean operators only: And, Or, and Not.
+This construction leads to an important conclusion: Every Boolean function, no matter how complex,
+can be expressed using three Boolean operators only: And, Or, and Not.
 
-**Two-Input Boolean Functions**
+**Two-Input Boolean Functions** An inspection of [figure 1.1](#1.1) reveals that the number of
+Boolean functions that can be defined over n binary variables is $2^{2^{n}}$. For example,
+the sixteen Boolean functions spanned by two variables are listed in [figure 1.2](#1.2). These
+functions were constructed systematically, by enumerating all the possible 4-wise
+combinations of binary values in the four right columns. Each function has a conventional
+name that seeks to describe its underlying operation. Here are some examples: The
+name of the Nor function is shorthand for Not-Or: Take the Or of $x$ and $y$, then
+negate the result. The Xor function—shorthand for ‘‘exclusive or’’—returns 1 when
+its two variables have opposing truth-values and 0 otherwise. Conversely, the
+Equivalence function returns 1 when the two variables have identical truth-values.
+The If-x-then-y function (also known as $x \to y$, or ‘‘$x$ Implies $y$’’) returns 1 when x is
+0 or when both $x$ and $y$ are 1. The other functions are self-explanatory.
 
 <ImageGroup
   id="1.2"
@@ -111,3 +126,148 @@ This construction leads to an important conclusion: Every Boolean function, no m
 />
 
 ### 1.1.2 Gate Logic
+
+## 1.2 Specification
+
+This section specifies a typical set of gates, each designed to carry out a common
+Boolean operation. These gates will be used in the chapters that follow to construct
+the full architecture of a typical modern computer. Our starting point is a single
+primitive Nand gate, from which all other gates will be derived recursively. Note that
+we provide only the gates’ specifications, or interfaces, delaying implementation
+details until a subsequent section. Readers who wish to construct the specified gates
+in HDL are encouraged to do so, referring to appendix A as needed. All the gates
+can be built and simulated on a personal computer, using the hardware simulator
+supplied with the book.
+
+<ImageGroup
+  id="1.7"
+  :sources="['/1.7.png']"
+  type="manual"
+  width="600px"
+  caption="Figure 1.7 A screen shot of simulating an Xor chip on the hardware simulator. The simulator
+state is shown just after the test script has completed running. The pin values correspond to the
+last simulation step (a = b = 1). Note that the output file generated by the simulation is consistent with the Xor truth table, indicating that the loaded HDL program delivers a correct
+Xor functionality. The compare file, not shown in the figure and typically specified by the
+chip’s client, has exactly the same structure and contents as that of the output file. The fact
+that the two files agree with each other is evident from the status message displayed at the
+bottom of the screen."
+/>
+
+### 1.2.1 The Nand Gate
+
+The starting point of our computer architecture is the Nand gate, from which all
+other gates and chips are built. The Nand gate is designed to compute the following
+Boolean function:
+
+| a   | b   | Nand(a,b) |
+| --- | --- | --------- |
+| 0   | 0   | 1         |
+| 0   | 1   | 1         |
+| 1   | 0   | 1         |
+| 1   | 1   | 0         |
+
+Throughout the book, we use ‘‘chip API boxes’’ to specify chips. For each chip, the
+API specifies the chip name, the names of its input and output pins, the function or
+operation that the chip effects, and an optional comment.
+
+```
+Chip name: Nand
+Inputs:    a, b
+Outputs:   out
+Function:  If a=b=1 then out=0 else out=1
+Comment:   This gate is considered primitive and thus there is
+           no need to implement it.
+```
+
+### 1.2.2 Basic Logic Gates
+
+Some of the logic gates presented here are typically referred to as ‘‘elementary’’ or
+‘‘basic.’’ At the same time, every one of them can be composed from Nand gates
+alone. Therefore, they need not be viewed as primitive.
+
+**Not** The single-input Not gate, also known as ‘‘converter,’’ converts its input from
+0 to 1 and vice versa. The gate API is as follows:
+
+```
+Chip name: Not
+Inputs:    in
+Outputs:   out
+Function:  If in=0 then out=1 else out=0.
+```
+
+**And** The And function returns 1 when both its inputs are 1, and 0 otherwise.
+
+```
+Chip name: And
+Inputs:    a, b
+Outputs:   out
+Function:  If a=b=1 then out=1 else out=0.
+```
+
+**Or** The Or function returns 1 when at least one of its inputs is 1, and 0 otherwise.
+
+```
+Chip name: Or
+Inputs:    a, b
+Outputs:   out
+Function:  If a=b=0 then out=0 else out=1.
+```
+
+**Xor** The Xor function, also known as ‘‘exclusive or,’’ returns 1 when its two inputs
+have opposing values, and 0 otherwise.
+
+```
+Chip name: Xor
+Inputs:    a, b
+Outputs:   out
+Function:  If a≠b then out=1 else out=0.
+```
+
+**Multiplexor** A multiplexor ([figure 1.8](#1.8)) is a three-input gate that uses one of the
+inputs, called ‘‘selection bit,’’ to select and output one of the other two inputs, called
+‘‘data bits.’’ Thus, a better name for this device might have been selector. The
+name multiplexor was adopted from communications systems, where similar
+devices are used to serialize (multiplex) several input signals over a single output
+wire.
+
+```
+Chip name: Mux
+Inputs:    a, b, sel
+Outputs:   out
+Function:  If sel=0 then out=a else out=b
+```
+
+<ImageGroup
+  id="1.8"
+  :sources="['/1.8.png']"
+  type="manual"
+  width="600px"
+  caption="Figure 1.8 Multiplexor. The table at the top right is an abbreviated version of the truth table on the left."
+/>
+
+**Demultiplexor** A demultiplexor ([figure 1.9](#1.9)) performs the opposite function of a
+multiplexor: It takes a single input and channels it to one of two possible outputs
+according to a selector bit that specifies which output to chose.
+
+```
+Chip name: DMux
+Inputs:    in, sel
+Outputs:   a, b
+Function:  If sel=0 then {a=in, b=0} else {a=0, b=in}.
+```
+
+<ImageGroup
+  id="1.9"
+  :sources="['/1.9.png']"
+  type="manual"
+  width="600px"
+  caption="Figure 1.9 Demultiplexor."
+/>
+
+### 1.2.3 Multi-Bit Versions of Basic Gates
+
+## 1.3 Implementation
+
+## 1.4 Perspective
+
+## 1.5 Project
