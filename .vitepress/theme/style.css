@@ -2,3 +2,7 @@
   --vp-font-family-base: 'Libre Caslon Text', serif;
   --vp-font-family-mono: 'DM Mono', monospace;
 }
+
+.image-group-caption {
+  text-wrap: balance;
+}
