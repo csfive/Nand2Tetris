@@ -266,8 +266,230 @@ Function:  If sel=0 then {a=in, b=0} else {a=0, b=in}.
 
 ### 1.2.3 Multi-Bit Versions of Basic Gates
 
+Computer hardware is typically designed to operate on multi-bit arrays called
+‘‘buses.’’ For example, a basic requirement of a 32-bit computer is to be able to
+compute (bit-wise) an And function on two given 32-bit buses. To implement this
+operation, we can build an array of 32 binary And gates, each operating separately
+on a pair of bits. In order to enclose all this logic in one package, we can encapsulate
+the gates array in a single chip interface consisting of two 32-bit input buses and one
+32-bit output bus.
+
+This section describes a typical set of such multi-bit logic gates, as needed for the
+construction of a typical 16-bit computer. We note in passing that the architecture of
+n-bit logic gates is basically the same irrespective of n’s value.
+
+When referring to individual bits in a bus, it is common to use an array syntax.
+For example, to refer to individual bits in a 16-bit bus named data, we use the notation
+`data[0], data[1], ..., data[15]`.
+
+**Multi-Bit Not** An n-bit Not gate applies the Boolean operation Not to every one of
+the bits in its n-bit input bus:
+
+```
+Chip name: Not16
+Inputs:    in[16] // a 16-bit pin
+Outputs:   out[16]
+Function:  For i=0..15 out[i]=Not(in[i]).
+```
+
+**Multi-Bit And** An n-bit And gate applies the Boolean operation And to every one
+of the n bit-pairs arrayed in its two n-bit input buses:
+
+```
+Chip name: And16
+Inputs:    a[16], b[16]
+Outputs:   out[16]
+Function:  For i=0..15 out[i]=And(a[i],b[i]).
+```
+
+**Multi-Bit Or** An n-bit Or gate applies the Boolean operation Or to every one of the
+n bit-pairs arrayed in its two n-bit input buses:
+
+```
+Chip name: Or16
+Inputs:    a[16], b[16]
+Outputs:   out[16]
+Function:  For i=0..15 out[i]=Or(a[i],b[i]).
+```
+
+Multi-Bit Multiplexor An n-bit multiplexor is exactly the same as the binary multiplexor described in [figure 1.8](#1.8), except that the two inputs are each n-bit wide; the selector is a single bit.
+
+```
+Chip name: Mux16
+Inputs:    a[16], b[16], sel
+Outputs:   out[16]
+Function:  If sel=0 then for i=0..15 out[i]=a[i]
+           else for i=0..15 out[i]=b[i].
+```
+
+### 1.2.4 Multi-Way Versions of Basic Gates
+
+Many 2-way logic gates that accept two inputs have natural generalization to multiway
+variants that accept an arbitrary number of inputs. This section describes a set
+of multi-way gates that will be used subsequently in various chips in our computer
+architecture. Similar generalizations can be developed for other architectures, as
+needed.
+
+**Multi-Way Or** An n-way Or gate outputs 1 when at least one of its n bit inputs is 1,
+and 0 otherwise. Here is the 8-way variant of this gate:
+
+```
+Chip name: Or8Way
+Inputs:    in[8]
+Outputs:   out
+Function:  out=Or(in[0],in[1],...,in[7]).
+```
+
+**Multi-Way/Multi-Bit** Multiplexor An m-way n-bit multiplexor selects one of m n-bit input buses and outputs it to a single n-bit output bus. The selection is specified by a set of $k$ control bits, where $k = \log_{2}{m}$. [Figure 1.10](#1.10) depicts a typical example.
+
+The computer platform that we develop in this book requires two variations of this
+chip: A 4-way 16-bit multiplexor and an 8-way 16-bit multiplexor:
+
+<ImageGroup
+  id="1.10"
+  :sources="['/1.10.png']"
+  type="manual"
+  width="600px"
+  caption="Figure 1.10 4-way multiplexor. The width of the input and output buses may vary."
+/>
+
+```
+Chip name: Mux4Way16
+Inputs:    a[16], b[16], c[16], d[16], sel[2]
+Outputs:   out[16]
+Function:  If sel=00 then out=a else if sel=01 then out=b
+           else if sel=10 then out=c else if sel=11 then out=d
+Comment:   The assignment operations mentioned above are all
+           16-bit. For example, "out=a" means "for i=0..15
+           out[i]=a[i]".
+```
+
+```
+Chip name: Mux8Way16
+Inputs:    a[16],b[16],c[16],d[16],e[16],f[16],g[16],h[16],
+           sel[3]
+Outputs:   out[16]
+Function:  If sel=000 then out=a else if sel=001 then out=b
+           else if sel=010 out=c ... else if sel=111 then out=h
+Comment:   The assignment operations mentioned above are all
+           16-bit. For example, "out=a" means "for i=0..15
+           out[i]=a[i]".
+```
+
+**Multi-Way/Multi-Bit Demultiplexor** An m-way n-bit demultiplexor ([figure 1.11](#1.11))
+channels a single n-bit input into one of m possible n-bit outputs. The selection is
+specified by a set of $k$ control bits, where $k = \log_{2}{m}$.
+
+The specific computer platform that we will build requires two variations of this
+chip: A 4-way 1-bit demultiplexor and an 8-way 1-bit multiplexor, as follows.
+
+<ImageGroup
+  id="1.11"
+  :sources="['/1.11.png']"
+  type="manual"
+  width="600px"
+  caption="Figure 1.11 4-way demultiplexor."
+/>
+
+```
+Chip name: DMux4Way
+Inputs:    in, sel[2]
+Outputs:   a, b, c, d
+Function:  If sel=00 then {a=in, b=c=d=0}
+           else if sel=01 then {b=in, a=c=d=0}
+           else if sel=10 then {c=in, a=b=d=0}
+           else if sel=11 then {d=in, a=b=c=0}.
+```
+
+```
+Chip name: DMux8Way
+Inputs:    in, sel[3]
+Outputs:   a, b, c, d, e, f, g, h
+Function:  If sel=000 then {a=in, b=c=d=e=f=g=h=0}
+           else if sel=001 then {b=in, a=c=d=e=f=g=h=0}
+           else if sel=010 ...
+           ...
+           else if sel=111 then {h=in, a=b=c=d=e=f=g=0}.
+```
+
 ## 1.3 Implementation
+
+Similar to the role of axioms in mathematics, primitive gates provide a set of elementary building blocks from which everything else can be built. Operationally, primitive gates have an ‘‘off-the-shelf’’ implementation that is supplied externally. Thus, they can be used in the construction of other gates and chips without worrying about their internal design. In the computer architecture that we are now beginning to build, we have chosen to base all the hardware on one primitive gate only: Nand. We now turn to outlining the first stage of this bottom-up hardware construction project, one gate at a time.
+
+Our implementation guidelines are intentionally partial, since we want you to discover the actual gate architectures yourself. We reiterate that each gate can be implemented in more than one way; the simpler the implementation, the better.
+
+**Not:** The implementation of a unary Not gate from a binary Nand gate is simple.
+Tip: Think positive.
+
+**And:** Once again, the gate implementation is simple. Tip: Think negative.
+
+**Or/Xor:** These functions can be defined in terms of some of the Boolean functions
+implemented previously, using some simple Boolean manipulations. Thus, the respective
+gates can be built using previously built gates.
+
+**Multiplexor/Demultiplexor:** Likewise, these gates can be built using previously built gates.
+
+**Multi-Bit Not/And/Or Gates:** Since we already know how to implement the elementary versions of these gates, the implementation of their n-ary versions is simply a matter of constructing arrays of n elementary gates, having each gate operate separately on its bit inputs. This implementation task is rather boring, but it will carry its weight when these multi-bit gates are used in more complex chips, as described in subsequent chapters.
+
+**Multi-Bit Multiplexor:** The implementation of an n-ary multiplexor is simply a
+matter of feeding the same selection bit to every one of n binary multiplexors. Again,
+a boring task resulting in a very useful chip.
+
+**Multi-Way Gates:** Implementation tip: Think forks.
 
 ## 1.4 Perspective
 
+This chapter described the first steps taken in an applied digital design project. In the
+next chapter we will build more complicated functionality using the gates built here.
+Although we have chosen to use Nand as our basic building block, other approaches
+are possible. For example, one can build a complete computer platform using Nor
+gates alone, or, alternatively, a combination of And, Or, and Not gates.
+These constructive approaches to logic design are theoretically equivalent,
+just as all theorems in geometry can be founded on different sets of axioms as alternative points of departure.
+The theory and practice of such constructions are covered in standard textbooks about digital design or logic design.
+
+Throughout the chapter, we paid no attention to efficiency considerations such as
+the number of elementary gates used in constructing a composite gate or the number
+of wire crossovers implied by the design. Such considerations are critically important
+in practice, and a great deal of computer science and electrical engineering expertise
+focuses on optimizing them. Another issue we did not address at all is the physical
+implementation of gates and chips using the laws of physics, for example, the role
+of transistors embedded in silicon. There are of course several such implementation
+options, each having its own characteristics (speed, power requirements, production
+cost, etc.). Any nontrivial coverage of these issues requires some background in
+electronics and physics.
+
 ## 1.5 Project
+
+**Objective** Implement all the logic gates presented in the chapter. The only building
+blocks that you can use are primitive Nand gates and the composite gates that you
+will gradually build on top of them.
+
+**Resources** The only tool that you need for this project is the hardware simulator
+supplied with the book. All the chips should be implemented in the HDL language
+specified in appendix A. For each one of the chips mentioned in the chapter, we
+provide a skeletal `.hdl` program (text file) with a missing implementation part. In
+addition, for each chip we provide a `.tst` script file that tells the hardware simulator
+how to test it, along with the correct output file that this script should generate,
+called `.cmp` or ‘‘compare file.’’ Your job is to complete the missing implementation
+parts of the supplied .hdl programs.
+
+**Contract** When loaded into the hardware simulator, your chip design (modified
+`.hdl` program), tested on the supplied `.tst` file, should produce the outputs listed in
+the supplied `.cmp` file. If that is not the case, the simulator will let you know.
+
+**Tips** The Nand gate is considered primitive and thus there is no need to build it:
+Whenever you use Nand in one of your HDL programs, the simulator will automatically invoke its built-in
+`tools/builtIn/Nand.hdl` implementation. We recommend implementing the other gates in this project in the
+order in which they appear in the chapter. However, since the builtIn directory features working versions
+of all the chips described in the book, you can always use these chips without defining them first: The simulator will automatically use their built-in versions.
+
+For example, consider the skeletal `Mux.hdl` program supplied in this project.
+Suppose that for one reason or another you did not complete this program’s implementation, but you still want to use Mux gates as internal parts in other chip designs. This is not a problem, thanks to the following convention. If our simulator fails to find a `Mux.hdl` file in the current directory, it automatically invokes a built-in Mux implementation, pre-supplied with the simulator’s software. This builtin implementation—a Java class stored in the builtIn directory—has the same interface and functionality as those of the Mux gate described in the book. Thus, if you want the simulator to ignore one or more of your chip implementations, simply move the corresponding `.hdl` files out of the current directory.
+
+**Steps** We recommend proceeding in the following order:
+
+0. The hardware simulator needed for this project is available in the tools directory of the book’s software suite.
+1. Read appendix A, sections A1–A6 only.
+2. Go through the hardware simulator tutorial, parts I, II, and III only.
+3. Build and simulate all the chips specified in the `projects/01` directory.
