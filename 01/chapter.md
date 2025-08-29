@@ -125,7 +125,157 @@ The If-x-then-y function (also known as $x \to y$, or ‘‘$x$ Implies $y$’�
   caption="Figure 1.2 All the Boolean functions of two variables."
 />
 
+The Nand function (as well as the Nor function) has an interesting theoretical property:
+Each one of the operations And, Or and Not can be constructed from it, and it alone
+(e.g., $x$ Or $y$ = ($x$ Nand $y$) Nand ($y$ Nand $y$)). And since every Boolean
+function can be constructed from And, Or, and Not operations using the canonical
+representation method, it follows that every Boolean function can be constructed
+from Nand operations alone. This result has far-reaching practical implications:
+Once we have in our disposal a physical device that implements Nand, we can use
+many copies of this device (wired in a certain way) to implement in hardware any
+Boolean function.
+
 ### 1.1.2 Gate Logic
+
+A gate is a physical device that implements a Boolean function. If a Boolean function
+$f$ operates on n variables and returns m binary results (in all our examples so far, m
+was 1), the gate that implements $f$ will have n input pins and m output pins. When we
+put some values $v_1 \dots v_n$ in the gate’s input pins, the gate’s ‘‘logic’’—its internal
+structure—should compute and output $f(v_1 \dots v_n)$. And just like complex Boolean
+functions can be expressed in terms of simpler functions, complex gates are composed
+from more elementary gates. The simplest gates of all are made from tiny
+switching devices, called transistors, wired in a certain topology designed to effect the
+overall gate functionality.
+
+Although most digital computers today use electricity to represent and transmit
+binary data from one gate to another, any alternative technology permitting switching
+and conducting capabilities can be employed. Indeed, during the last fifty years,
+researchers have built many hardware implementations of Boolean functions, including
+magnetic, optical, biological, hydraulic, and pneumatic mechanisms. Today, most
+gates are implemented as transistors etched in silicon, packaged as chips. In this book
+we use the words chip and gate interchangeably, tending to use the term gates for
+simple chips.
+
+The availability of alternative switching technology options, on the one hand, and
+the observation that Boolean algebra can be used to abstract the behavior of any
+such technology, on the other, is extremely important. Basically, it implies that
+computer scientists don’t have to worry about physical things like electricity, circuits,
+switches, relays, and power supply. Instead, computer scientists can be content with
+the abstract notions of Boolean algebra and gate logic, trusting that someone else
+(the physicists and electrical engineers—bless their souls) will figure out how to
+actually realize them in hardware. Hence, a primitive gate (see [figure 1.3](#1.3)) can be
+viewed as a black box device that implements an elementary logical operation in one
+way or another—we don’t care how. A hardware designer starts from such primitive
+gates and designs more complicated functionality by interconnecting them, leading to
+the construction of composite gates.
+
+<ImageGroup
+  id="1.3"
+  :sources="['/1.3.png']"
+  type="manual"
+  width="500px"
+  caption="Figure 1.3 Standard symbolic notation of some elementary logic gates."
+/>
+
+Primitive and Composite Gates Since all logic gates have the same input and output
+semantics (0’s and 1’s), they can be chained together, creating composite gates of
+arbitrary complexity. For example, suppose we are asked to implement the 3-way
+Boolean function $And(a, b, c)$. Using Boolean algebra, we can begin by observing
+that $a \cdot b \cdot c = (a \cdot b) \cdot c$, or, using prefix notation, $And(a, b, c) = And(And(a, b), c)$.
+Next, we can use this result to construct the composite gate depicted in [figure 1.4](#1.4).
+
+<ImageGroup
+  id="1.4"
+  :sources="['/1.4.png']"
+  type="manual"
+  width="550px"
+  caption="Figure 1.4 Composite implementation of a three-way And gate. The rectangle on the right
+defines the conceptual boundaries of the gate interface."
+/>
+
+The construction described in [figure 1.4](#1.4) is a simple example of gate logic, also
+called logic design. Simply put, logic design is the art of interconnecting gates in
+order to implement more complex functionality, leading to the notion of composite
+gates. Since composite gates are themselves realizations of (possibly complex)
+Boolean functions, their ‘‘outside appearance’’ (e.g., left side of [figure 1.4](#1.4)) looks just
+like that of primitive gates. At the same time, their internal structure can be rather
+complex.
+
+We see that any given logic gate can be viewed from two different perspectives:
+external and internal. The right-hand side of [figure 1.4](#1.4) gives the gate’s internal
+architecture, or implementation, whereas the left side shows only the gate interface,
+namely, the input and output pins that it exposes to the outside world. The former is
+relevant only to the gate designer, whereas the latter is the right level of detail for
+other designers who wish to use the gate as an abstract off-the-shelf component,
+without paying attention to its internal structure.
+
+Let us consider another logic design example—that of a Xor gate. As discussed
+before, $Xor(a, b)$ is 1 exactly when either $a$ is 1 and $b$ is 0, or when $a$ is 0 and $b$
+is 1. Said otherwise, $Xor(a, b) = Or(And(a, Not(b)), And(Not(a), b))$. This definition
+leads to the logic design shown in [figure 1.5](#1.5).
+
+<ImageGroup
+  id="1.5"
+  :sources="['/1.5.png']"
+  type="manual"
+  width="550px"
+  caption="Figure 1.5 Xor gate, along with a possible implementation."
+/>
+
+Note that the gate interface is unique: There is only one way to describe it, and this
+is normally done using a truth table, a Boolean expression, or some verbal specification.
+This interface, however, can be realized using many different implementations,
+some of which will be better than others in terms of cost, speed, and simplicity. For
+example, the Xor function can be implemented using four, rather than five, And, Or,
+and Not gates. Thus, from a functional standpoint, the fundamental requirement of
+logic design is that the gate implementation will realize its stated interface, in one way
+or another. From an efficiency standpoint, the general rule is to try to do more with
+less, that is, use as few gates as possible.
+
+To sum up, the art of logic design can be described as follows:
+Given a gate specification (interface), find an efficient way to implement it using other gates that
+were already implemented. This, in a nutshell, is what we will do in the rest of this
+chapter.
+
+### 1.1.3 Actual Hardware Construction
+
+Having described the logic of composing complex gates from simpler ones, we are
+now in a position to discuss how gates are actually built. Let us start with an
+intentionally naive example.
+
+Suppose we open a chip fabrication shop in our home garage. Our first contract is
+to build a hundred Xor gates. Using the order’s downpayment, we purchase a soldering gun,
+a roll of copper wire, and three bins labeled ‘‘And gates,’’ ‘‘Or gates,’’
+and ‘‘Not gates,’’ each containing many identical copies of these elementary logic
+gates. Each of these gates is sealed in a plastic casing that exposes some input and
+output pins, as well as a power supply plug. To get started, we pin [figure 1.5](#1.5) to our
+garage wall and proceed to realize it using our hardware. First, we take two And
+gates, two Not gates, and one Or gate, and mount them on a board according to the
+figure’s layout. Next, we connect the chips to one another by running copper wires
+among them and by soldering the wire ends to the respective input/output pins.
+Now, if we follow the gate diagram carefully, we will end up having three exposed
+wire ends. We then solder a pin to each one of these wire ends, seal the entire device
+(except for the three pins) in a plastic casing, and label it ‘‘Xor.’’ We can repeat this
+assembly process many times over. At the end of the day, we can store all the
+chips that we’ve built in a new bin and label it ‘‘Xor gates.’’ If we (or other people)
+are asked to construct some other chips in the future, we’ll be able to use these Xor
+gates as elementary building blocks, just as we used the And, Or, and Not gates
+before.
+
+As the reader has probably sensed, the garage approach to chip production leaves
+much to be desired. For starters, there is no guarantee that the given chip diagram is
+correct. Although we can prove correctness in simple cases like Xor, we cannot do so
+in many realistically complex chips. Thus, we must settle for empirical testing: Build
+the chip, connect it to a power supply, activate and deactivate the input pins in various
+configurations, and hope that the chip outputs will agree with its specifications. If
+the chip fails to deliver the desired outputs, we will have to tinker with its physical
+structure—a rather messy affair. Further, even if we will come up with the right design,
+replicating the chip assembly process many times over will be a time-consuming
+and error-prone affair. There must be a better way!
+
+### 1.1.4 Hardware Description Language (HDL)
+
+### 1.1.5 Hardware Simulation
 
 ## 1.2 Specification
 
@@ -146,11 +296,11 @@ supplied with the book.
   width="600px"
   caption="Figure 1.7 A screen shot of simulating an Xor chip on the hardware simulator. The simulator
 state is shown just after the test script has completed running. The pin values correspond to the
-last simulation step (a = b = 1). Note that the output file generated by the simulation is consistent with the Xor truth table, indicating that the loaded HDL program delivers a correct
-Xor functionality. The compare file, not shown in the figure and typically specified by the
-chip’s client, has exactly the same structure and contents as that of the output file. The fact
-that the two files agree with each other is evident from the status message displayed at the
-bottom of the screen."
+last simulation step (a = b = 1). Note that the output file generated by the simulation is consistent
+with the Xor truth table, indicating that the loaded HDL program delivers a correct Xor functionality.
+The compare file, not shown in the figure and typically specified by the chip’s client, has exactly the
+same structure and contents as that of the output file. The factthat the two files agree with each other
+is evident from the status message displayed at the bottom of the screen."
 />
 
 ### 1.2.1 The Nand Gate
@@ -312,7 +462,8 @@ Outputs:   out[16]
 Function:  For i=0..15 out[i]=Or(a[i],b[i]).
 ```
 
-Multi-Bit Multiplexor An n-bit multiplexor is exactly the same as the binary multiplexor described in [figure 1.8](#1.8), except that the two inputs are each n-bit wide; the selector is a single bit.
+Multi-Bit Multiplexor An n-bit multiplexor is exactly the same as the binary multiplexor described in [figure 1.8](#1.8),
+except that the two inputs are each n-bit wide; the selector is a single bit.
 
 ```
 Chip name: Mux16
@@ -340,7 +491,9 @@ Outputs:   out
 Function:  out=Or(in[0],in[1],...,in[7]).
 ```
 
-**Multi-Way/Multi-Bit** Multiplexor An m-way n-bit multiplexor selects one of m n-bit input buses and outputs it to a single n-bit output bus. The selection is specified by a set of $k$ control bits, where $k = \log_{2}{m}$. [Figure 1.10](#1.10) depicts a typical example.
+**Multi-Way/Multi-Bit** Multiplexor An m-way n-bit multiplexor selects one of m n-bit input buses
+and outputs it to a single n-bit output bus. The selection is specified by a set of $k$ control bits,
+where $k = \log_{2}{m}$. [Figure 1.10](#1.10) depicts a typical example.
 
 The computer platform that we develop in this book requires two variations of this
 chip: A 4-way 16-bit multiplexor and an 8-way 16-bit multiplexor:
@@ -414,9 +567,17 @@ Function:  If sel=000 then {a=in, b=c=d=e=f=g=h=0}
 
 ## 1.3 Implementation
 
-Similar to the role of axioms in mathematics, primitive gates provide a set of elementary building blocks from which everything else can be built. Operationally, primitive gates have an ‘‘off-the-shelf’’ implementation that is supplied externally. Thus, they can be used in the construction of other gates and chips without worrying about their internal design. In the computer architecture that we are now beginning to build, we have chosen to base all the hardware on one primitive gate only: Nand. We now turn to outlining the first stage of this bottom-up hardware construction project, one gate at a time.
+Similar to the role of axioms in mathematics, primitive gates provide a set of elementary
+building blocks from which everything else can be built. Operationally, primitive gates have
+an ‘‘off-the-shelf’’ implementation that is supplied externally. Thus, they can be used in the
+construction of other gates and chips without worrying about their internal design. In the computer
+architecture that we are now beginning to build, we have chosen to base all the hardware on one
+primitive gate only: Nand. We now turn to outlining the first stage of this bottom-up hardware
+construction project, one gate at a time.
 
-Our implementation guidelines are intentionally partial, since we want you to discover the actual gate architectures yourself. We reiterate that each gate can be implemented in more than one way; the simpler the implementation, the better.
+Our implementation guidelines are intentionally partial, since we want you to discover the actual
+gate architectures yourself. We reiterate that each gate can be implemented in more than one way;
+the simpler the implementation, the better.
 
 **Not:** The implementation of a unary Not gate from a binary Nand gate is simple.
 Tip: Think positive.
@@ -429,7 +590,11 @@ gates can be built using previously built gates.
 
 **Multiplexor/Demultiplexor:** Likewise, these gates can be built using previously built gates.
 
-**Multi-Bit Not/And/Or Gates:** Since we already know how to implement the elementary versions of these gates, the implementation of their n-ary versions is simply a matter of constructing arrays of n elementary gates, having each gate operate separately on its bit inputs. This implementation task is rather boring, but it will carry its weight when these multi-bit gates are used in more complex chips, as described in subsequent chapters.
+**Multi-Bit Not/And/Or Gates:** Since we already know how to implement the elementary versions of these gates,
+the implementation of their n-ary versions is simply a matter of constructing arrays of n elementary gates,
+having each gate operate separately on its bit inputs. This implementation task is rather boring,
+but it will carry its weight when these multi-bit gates are used in more complex chips,
+as described in subsequent chapters.
 
 **Multi-Bit Multiplexor:** The implementation of an n-ary multiplexor is simply a
 matter of feeding the same selection bit to every one of n binary multiplexors. Again,
@@ -445,8 +610,9 @@ Although we have chosen to use Nand as our basic building block, other approache
 are possible. For example, one can build a complete computer platform using Nor
 gates alone, or, alternatively, a combination of And, Or, and Not gates.
 These constructive approaches to logic design are theoretically equivalent,
-just as all theorems in geometry can be founded on different sets of axioms as alternative points of departure.
-The theory and practice of such constructions are covered in standard textbooks about digital design or logic design.
+just as all theorems in geometry can be founded on different sets of axioms as
+alternative points of departure. The theory and practice of such constructions
+are covered in standard textbooks about digital design or logic design.
 
 Throughout the chapter, we paid no attention to efficiency considerations such as
 the number of elementary gates used in constructing a composite gate or the number
@@ -482,10 +648,18 @@ the supplied `.cmp` file. If that is not the case, the simulator will let you kn
 Whenever you use Nand in one of your HDL programs, the simulator will automatically invoke its built-in
 `tools/builtIn/Nand.hdl` implementation. We recommend implementing the other gates in this project in the
 order in which they appear in the chapter. However, since the builtIn directory features working versions
-of all the chips described in the book, you can always use these chips without defining them first: The simulator will automatically use their built-in versions.
+of all the chips described in the book, you can always use these chips without defining them first:
+The simulator will automatically use their built-in versions.
 
 For example, consider the skeletal `Mux.hdl` program supplied in this project.
-Suppose that for one reason or another you did not complete this program’s implementation, but you still want to use Mux gates as internal parts in other chip designs. This is not a problem, thanks to the following convention. If our simulator fails to find a `Mux.hdl` file in the current directory, it automatically invokes a built-in Mux implementation, pre-supplied with the simulator’s software. This builtin implementation—a Java class stored in the builtIn directory—has the same interface and functionality as those of the Mux gate described in the book. Thus, if you want the simulator to ignore one or more of your chip implementations, simply move the corresponding `.hdl` files out of the current directory.
+Suppose that for one reason or another you did not complete this program’s implementation, but you
+still want to use Mux gates as internal parts in other chip designs. This is not a problem, thanks to
+the following convention. If our simulator fails to find a `Mux.hdl` file in the current directory,
+it automatically invokes a built-in Mux implementation, pre-supplied with the simulator’s software.
+This builtin implementation—a Java class stored in the builtIn directory—has the same interface and
+functionality as those of the Mux gate described in the book. Thus, if you want the simulator to
+ignore one or more of your chip implementations, simply move the corresponding `.hdl` files out of
+the current directory.
 
 **Steps** We recommend proceeding in the following order:
 
