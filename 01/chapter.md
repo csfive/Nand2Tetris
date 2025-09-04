@@ -177,7 +177,7 @@ the construction of composite gates.
   caption="Figure 1.3 Standard symbolic notation of some elementary logic gates."
 />
 
-Primitive and Composite Gates Since all logic gates have the same input and output
+**Primitive and Composite Gates** Since all logic gates have the same input and output
 semantics (0’s and 1’s), they can be chained together, creating composite gates of
 arbitrary complexity. For example, suppose we are asked to implement the 3-way
 Boolean function $And(a, b, c)$. Using Boolean algebra, we can begin by observing
@@ -301,7 +301,61 @@ copies of the physical chip can be stamped in silicon. This final step in the ch
 life cycle—from an optimized HDL program to mass production—is typically outsourced
 to companies that specialize in chip fabrication, using one switching technology or another.
 
-。。。
+**Example: Building a Xor Gate** As we have seen in figures [1.2](#1.2) and [1.5](#1.5),
+one way to define exclusive or is $Xor(a, b) = Or(And(a, Not(b)), And(Not(a), b))$.
+This logic can be expressed either graphically, as a gate diagram, or textually,
+as an HDL program. The latter program is written in the HDL variant used throughout this book,
+defined in [appendix A](/appendix/hdl). See [figure 1.6](#1.6) for the details.
+
+**Explanation** An HDL definition of a chip consists of a header section and a parts
+section. The header section specifies the chip interface, namely the chip name and the
+names of its input and output pins. The parts section describes the names and topology
+of all the lower-level parts (other chips) from which this chip is constructed. Each
+part is represented by a statement that specifies the part name and the way it is
+connected to other parts in the design. Note that in order to write such statements
+legally, the HDL programmer must have a complete documentation of the underlying
+parts’ interfaces. For example, [figure 1.6](#1.6) assumes that the input and output
+pins of the Not gate are labeled in and out, and those of And and Or are labeled a, b
+and out. This API-type information is not obvious, and one must have access to it before
+one can plug the chip parts into the present code.
+
+<ImageGroup
+  id="1.6"
+  :sources="['/1.6.png']"
+  type="manual"
+  width="600px"
+  caption="Figure 1.6 HDL implementation of a Xor gate."
+/>
+
+Inter-part connections are described by creating and connecting internal pins,
+as needed. For example, consider the bottom of the gate diagram, where the output
+of a Not gate is piped into the input of a subsequent And gate. The HDL code
+describes this connection by the pair of statements $Not(\dots,out=nota)$ and
+$And(a=nota,\dots)$. The first statement creates an internal pin (outbound wire)
+named nota, feeding out into it. The second statement feeds the value of nota
+into the a input of an And gate. Note that pins may have an unlimited fan out.
+For example, in [figure 1.6](#1.6), each input is simultaneously fed into two
+gates. In gate diagrams, multiple connections are described using forks. In HDL,
+the existence of forks is implied by the code.
+
+**Testing** Rigorous quality assurance mandates that chips be tested in a specific,
+replicable, and well-documented fashion. With that in mind, hardware simulators are
+usually designed to run test scripts, written in some scripting language. For example,
+the test script in [figure 1.6](#1.6) is written in the scripting language understood
+by the hardware simulator supplied with the book. This scripting language is described
+fully in appendix B.
+
+Let us give a brief description of the test script from [figure 1.6](#1.6). The first two lines
+of the test script instruct the simulator to load the Xor.hdl program and get ready to
+print the values of selected variables. Next, the script lists a series of testing scenarios,
+designed to simulate the various contingencies under which the Xor chip will have to
+operate in ‘‘real-life’’ situations. In each scenario, the script instructs the simulator to
+bind the chip inputs to certain data values, compute the resulting output, and record
+the test results in a designated output file. In the case of simple gates like Xor, one
+can write an exhaustive test script that enumerates all the possible input values of the
+gate. The resulting output file (right side of [figure 1.6](#1.6)) can then be viewed as a
+complete empirical proof that the chip is well designed. The luxury of such certitude is
+not feasible in more complex chips, as we will see later.
 
 ### 1.1.5 Hardware Simulation
 
