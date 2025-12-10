@@ -1,30 +1,7 @@
 import { defineConfig, type DefaultTheme, type HeadConfig } from 'vitepress'
 
 const sidebar: DefaultTheme.Sidebar = [
-  {
-    text: 'Project 01',
-    collapsed: false,
-    items: [
-      { text: 'Chapter', link: '/01/chapter' },
-      { text: 'Project', link: '/01/project' },
-    ],
-  },
-  {
-    text: 'Project 02',
-    collapsed: true,
-    items: [
-      { text: 'Chapter', link: '/02/chapter' },
-      { text: 'Project', link: '/02/project' },
-    ],
-  },
-  {
-    text: 'Appendix',
-    collapsed: true,
-    items: [
-      { text: 'Hardware Description Language', link: '/appendix/hdl' },
-      { text: 'The Hack Chip Set', link: '/appendix/thcs' },
-    ],
-  },
+  { text: '01. Elementary Logic Gates', link: '/notes/01' },
 ]
 
 const configs = {
