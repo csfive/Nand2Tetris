@@ -11,7 +11,7 @@ const configs = {
   description: 'Building a Modern Computer From First Principles',
   repo: 'csfive/nand2tetris',
   umamiId: 'e5468703-ff9b-4a0b-8096-3ea4a4bf3068',
-  chineseFont: 'https://chinese-fonts-cdn.deno.dev/packages/stdgt/dist/%E4%B8%8A%E5%9B%BE%E4%B8%9C%E8%A7%82%E4%BD%93-%E5%B8%B8%E8%A7%84/result.css',
+  chineseFont: 'https://chinese-fonts-cdn.netlify.app/packages/stdgt/dist/%E4%B8%8A%E5%9B%BE%E4%B8%9C%E8%A7%82%E4%BD%93-%E5%B8%B8%E8%A7%84/result.css',
   googleFont:
     'https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap',
 }
