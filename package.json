@@ -7,9 +7,9 @@
   },
   "devDependencies": {
     "@mancuoj/prettier-config": "^0.5.4",
-    "markdown-it-mathjax3": "^5.2.0",
-    "prettier": "^3.7.4",
-    "vitepress": "^1.6.4",
+    "markdown-it-mathjax3": "^4",
+    "prettier": "^3.8.2",
+    "vitepress": "^2.0.0-alpha.17",
     "vitepress-theme-flexoki": "^0.0.1"
   },
   "prettier": "@mancuoj/prettier-config"

@@ -1,4 +1,4 @@
 :root {
   --vp-font-family-base: 'Libre Caslon Text', 'STDongGuanTi', serif;
-  --vp-font-family-mono: 'DM Mono', monospace;
+  --vp-font-family-mono: 'DM Mono', 'STDongGuanTi', monospace;
 }
