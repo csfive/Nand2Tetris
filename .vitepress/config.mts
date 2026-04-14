@@ -1,6 +1,9 @@
 import { defineConfig, type DefaultTheme, type HeadConfig } from 'vitepress'
 
-const sidebar: DefaultTheme.Sidebar = [{ text: '01. Elementary Logic Gates', link: '/notes/1' }]
+const sidebar: DefaultTheme.Sidebar = [
+  { text: '01. Elementary Logic Gates', link: '/notes/01' },
+  { text: '02. Boolean Arithmetic', link: '/notes/02' },
+]
 
 const configs = {
   sidebar,
