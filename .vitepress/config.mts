@@ -1,4 +1,5 @@
 import { defineConfig, type DefaultTheme, type HeadConfig } from 'vitepress'
+import { hdlLanguage } from './hdl'
 
 const sidebar: DefaultTheme.Sidebar = [
   { text: '01. Elementary Logic Gates', link: '/notes/01' },
@@ -30,6 +31,14 @@ export default defineConfig({
     math: true,
     image: {
       lazyLoading: true,
+    },
+    theme: {
+      light: 'vitesse-light',
+      dark: 'vitesse-dark',
+    },
+    languages: [hdlLanguage],
+    languageLabel: {
+      hdl: 'HDL',
     },
   },
   themeConfig: {
