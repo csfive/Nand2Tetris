@@ -5,6 +5,10 @@ import { hdlLanguage } from './hdl'
 const sidebar: DefaultTheme.Sidebar = [
   { text: '01. Elementary Logic Gates', link: '/notes/01' },
   { text: '02. Boolean Arithmetic', link: '/notes/02' },
+  { text: '03. Memory', link: '/notes/03' },
+  { text: '04. Machine Language', link: '/notes/04' },
+  { text: '05. Computer Architecture', link: '/notes/05' },
+  { text: '06. Assembler', link: '/notes/06' },
 ]
 
 const configs = {
