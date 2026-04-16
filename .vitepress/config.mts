@@ -38,10 +38,6 @@ export default defineConfig({
       dark: 'vitesse-dark',
     },
     languages: [hdlLanguage, chipApiLanguage],
-    languageLabel: {
-      hdl: 'HDL',
-      chip: 'CHIP',
-    },
   },
   themeConfig: {
     logo: '/logo.svg',

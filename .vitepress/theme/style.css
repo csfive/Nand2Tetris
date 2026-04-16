@@ -28,20 +28,13 @@
   line-height: 1.2em;
 }
 
-h2>a {
+h2 > a {
   opacity: 0.3;
   text-decoration: none;
 }
 
-h2>a:hover {
+h2 > a:hover {
   opacity: 0.9;
-}
-
-.VPSidebarItem.level-0 > .item > .text {
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 0.8rem;
-  opacity: 0.5;
 }
 
 .vp-doc :not(pre) > code {
