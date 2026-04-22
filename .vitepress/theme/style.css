@@ -7,36 +7,3 @@
 #VPSidebarNav {
   margin-top: var(--vp-doc-top-height);
 }
-
-.main p {
-  font-size: 1.1rem;
-  line-height: 2.2rem;
-}
-
-.main h1 {
-  font-size: 2.8rem;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
-  font-weight: bolder;
-  line-height: 1.2em;
-}
-
-.main h2 {
-  font-size: 2rem;
-  border-top: 0;
-  margin-bottom: 2rem;
-  line-height: 1.2em;
-}
-
-h2 > a {
-  opacity: 0.3;
-  text-decoration: none;
-}
-
-h2 > a:hover {
-  opacity: 0.9;
-}
-
-.vp-doc :not(pre) > code {
-  text-wrap: nowrap;
-}
