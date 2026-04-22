@@ -1,5 +1,6 @@
 import { defineConfig, type DefaultTheme, type HeadConfig } from 'vitepress'
 import { chipApiLanguage } from './chip-api'
+import { hackAsmLanguage } from './hack-asm'
 import { hdlLanguage } from './hdl'
 
 const sidebar: DefaultTheme.Sidebar = [
@@ -41,7 +42,7 @@ export default defineConfig({
       light: 'vitesse-light',
       dark: 'vitesse-dark',
     },
-    languages: [hdlLanguage, chipApiLanguage],
+    languages: [hdlLanguage, chipApiLanguage, hackAsmLanguage],
   },
   themeConfig: {
     logo: '/logo.svg',
