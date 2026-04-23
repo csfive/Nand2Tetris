@@ -18,7 +18,7 @@ const configs = {
   title: 'Nand2Tetris',
   description: 'Building a Modern Computer From First Principles',
   repo: 'csfive/nand2tetris',
-  umamiId: 'e5468703-ff9b-4a0b-8096-3ea4a4bf3068',
+  umamiId: 'b0c559e8-1084-4104-b436-1bf231dce593',
   chineseFont:
     'https://chinese-fonts-cdn.netlify.app/packages/stdgt/dist/%E4%B8%8A%E5%9B%BE%E4%B8%9C%E8%A7%82%E4%BD%93-%E5%B8%B8%E8%A7%84/result.css',
   googleFont:
