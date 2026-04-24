@@ -2,6 +2,9 @@
   "name": "mise-bun",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17"
+    },
     "ghcr.io/roul/devcontainer-features/mise-bun:1": {}
   }
 }
