@@ -3,26 +3,16 @@ import { chipApiLanguage } from './chip-api'
 import { hackAsmLanguage } from './hack-asm'
 import { hdlLanguage } from './hdl'
 
-const sidebar: DefaultTheme.Sidebar = [
-  { text: '01. Elementary Logic Gates', link: '/notes/01' },
-  { text: '02. Boolean Arithmetic', link: '/notes/02' },
-  { text: '03. Memory', link: '/notes/03' },
-  { text: '04. Machine Language', link: '/notes/04' },
-  { text: '05. Computer Architecture', link: '/notes/05' },
-  { text: '06. Assembler', link: '/notes/06' },
-]
-
 const configs = {
-  sidebar,
   lang: 'zh-CN',
   title: 'Nand2Tetris',
   description: 'Building a Modern Computer From First Principles',
   repo: 'csfive/nand2tetris',
-  umamiId: 'b0c559e8-1084-4104-b436-1bf231dce593',
+  umamiId: '',
   chineseFont:
     'https://chinese-fonts-cdn.netlify.app/packages/stdgt/dist/%E4%B8%8A%E5%9B%BE%E4%B8%9C%E8%A7%82%E4%BD%93-%E5%B8%B8%E8%A7%84/result.css',
   googleFont:
-    'https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap',
+    'https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap',
 }
 
 export default defineConfig({
@@ -46,7 +36,30 @@ export default defineConfig({
   },
   themeConfig: {
     logo: '/logo.svg',
-    sidebar: configs.sidebar,
+    sidebar: [
+      {
+        text: 'Hardware',
+        items: [
+          { text: '01. Elementary Logic Gates', link: '/notes/01' },
+          { text: '02. Boolean Arithmetic', link: '/notes/02' },
+          { text: '03. Memory', link: '/notes/03' },
+          { text: '04. Machine Language', link: '/notes/04' },
+          { text: '05. Computer Architecture', link: '/notes/05' },
+          { text: '06. Assembler', link: '/notes/06' },
+        ],
+      },
+      {
+        text: 'Software',
+        items: [
+          { text: '07. VM I: Stack Arithmetic', link: '/notes/07' },
+          { text: '08. VM II: Program Control', link: '/notes/08' },
+          { text: '09. High-Level Language', link: '/notes/09' },
+          { text: '10. Compiler I: Parsing', link: '/notes/10' },
+          { text: '11. Compiler II: Code Generation', link: '/notes/11' },
+          { text: '12. Operating System', link: '/notes/12' },
+        ],
+      },
+    ],
     socialLinks: [{ icon: 'github', link: `https://github.com/${configs.repo}` }],
     outline: 'deep',
     ...getLabel(),

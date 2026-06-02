@@ -1,9 +1,38 @@
 :root {
-  --vp-font-family-base: 'Libre Caslon Text', 'STDongGuanTi', serif;
+  --vp-font-family-base: 'STDongGuanTi', serif;
   --vp-font-family-mono: 'DM Mono', 'STDongGuanTi', monospace;
+  --vp-layout-max-width: 1440px;
   --vp-doc-top-height: 5rem;
 }
 
 #VPSidebarNav {
   margin-top: var(--vp-doc-top-height);
+}
+
+.VPSidebarItem.level-0 > .item {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+  color: var(--vp-c-text-3);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--vp-c-bg-soft);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--vp-c-divider);
+  border-radius: 5px;
+  border: 2px solid var(--vp-c-bg-soft);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vp-c-text-3);
 }
