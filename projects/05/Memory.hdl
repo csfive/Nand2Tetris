@@ -25,7 +25,11 @@ CHIP Memory {
         // 00/01 -> RAM16K (0x0000-0x3FFF)
         // 10    -> Screen (0x4000-0x5FFF)
         // 11    -> Keyboard (0x6000)
-        DMux(in=load, sel=address[14], a=loadram, b=loadscreen);
+        Not(in=address[14], out=not14);
+        Not(in=address[13], out=not13);
+        And(a=load, b=not14, out=loadram);
+        And(a=address[14], b=not13, out=screen);
+        And(a=load, b=screen, out=loadscreen);
         RAM16K(in=in, load=loadram, address=address[0..13], out=ramout);
         Screen(in=in, load=loadscreen, address=address[0..12], out=screenout);
         Keyboard(out=keyboardout);
