@@ -45,12 +45,12 @@ export default defineConfig({
           { text: '03. Memory', link: '/notes/03' },
           { text: '04. Machine Language', link: '/notes/04' },
           { text: '05. Computer Architecture', link: '/notes/05' },
-          { text: '06. Assembler', link: '/notes/06' },
         ],
       },
       {
         text: 'Software',
         items: [
+          { text: '06. Assembler', link: '/notes/06' },
           { text: '07. VM I: Stack Arithmetic', link: '/notes/07' },
           { text: '08. VM II: Program Control', link: '/notes/08' },
           { text: '09. High-Level Language', link: '/notes/09' },
