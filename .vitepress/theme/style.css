@@ -1,8 +1,13 @@
 :root {
   --vp-font-family-base: 'STDongGuanTi', serif;
   --vp-font-family-mono: 'DM Mono', 'STDongGuanTi', monospace;
-  --vp-layout-max-width: 1440px;
   --vp-doc-top-height: 5rem;
+  --vp-sidebar-width: 300px;
+  --vp-layout-max-width: 100%;
+}
+
+.VPDoc.has-aside .content-container {
+  max-width: 100% !important;
 }
 
 #VPSidebarNav {

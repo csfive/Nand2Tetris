@@ -45,7 +45,7 @@ CHIP CPU {
         DRegister(in=aluout, load=loadD, out=Dout);
 
         // ALU 左输入永远是 D 寄存器的输出
-        // 右输入要看 C 指令的 a 位，a == 0 时是 A 寄存器的输出，a == 1 时是用 M，也就是 inM
+        // 右输入看 C 指令的 a 位，a == 0 时是 A 寄存器的输出，a == 1 时是 inM
         Mux16(a=Aout, b=inM, sel=instruction[12], out=aluy);
         ALU(x=Dout, y=aluy, 
             zx=instruction[11], nx=instruction[10],
@@ -53,7 +53,8 @@ CHIP CPU {
             f=instruction[7], no=instruction[6],
             out=aluout, zr=zr, ng=ng);
         
-        // outM 就是 ALU 的输出，但只有 C 指令且 dest 包含 M，也就是 d3 == 1 时，writeM 才为 1
+        // outM 就是 ALU 的输出
+        // 只有 C 指令且 dest 包含 M，也就是 d3 == 1 时，writeM 才为 1
         Or16(a=aluout, b=false, out=outM);
         And(a=instruction[15], b=instruction[3], out=writeM);
 
