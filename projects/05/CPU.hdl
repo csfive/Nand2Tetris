@@ -1,7 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/5/CPU.hdl
 /**
  * The Hack Central Processing unit (CPU).
  * Parses the binary code in the instruction input and executes it according to the
@@ -19,18 +15,62 @@
  * their new values only in the next cycle.
  */
 CHIP CPU {
-
-    IN  inM[16],         // M value input  (M = contents of RAM[A])
+    IN  inM[16],         // M value input (M = contents of RAM[A])
         instruction[16], // Instruction for execution
         reset;           // Signals whether to re-start the current
                          // program (reset==1) or continue executing
                          // the current program (reset==0).
 
     OUT outM[16],        // M value output
-        writeM,          // Write to M? 
+        writeM,          // Write to M?
         addressM[15],    // Address in data memory (of M)
         pc[15];          // address of next instruction
 
     PARTS:
-	//// Replace this comment with your code.
+        // A 指令: 0vvvvvvvvvvvvvvv，A = value，PC++
+        // C 指令: 111accccccdddjjj，ALU 算东西，根据 ddd 写入 A/D/M，根据 jjj 的小于/等于/大于决定是否跳转
+
+        // A 寄存器存数据也存地址
+        // A 指令，直接写入
+        // C 指令且 dest 包含 A，也就是 d1 == 1 时写入
+        // addressM 永远来自 A，M = contents of RAM[A]
+        Not(in=instruction[15], out=isA);
+        Mux16(a=instruction, b=aluout, sel=instruction[15], out=Ain);
+        Or(a=isA, b=instruction[5], out=loadA);
+        ARegister(in=Ain, load=loadA, out=Aout, out[0..14]=addressM);
+
+        // D 寄存器只存数据
+        // C 指令且 dest 包含 D，也就是 d2 == 1 时写入
+        And(a=instruction[15], b=instruction[4], out=loadD);
+        DRegister(in=aluout, load=loadD, out=Dout);
+
+        // ALU 左输入永远是 D 寄存器的输出
+        // 右输入要看 C 指令的 a 位，a == 0 时是 A 寄存器的输出，a == 1 时是用 M，也就是 inM
+        Mux16(a=Aout, b=inM, sel=instruction[12], out=aluy);
+        ALU(x=Dout, y=aluy, 
+            zx=instruction[11], nx=instruction[10],
+            zy=instruction[9], ny=instruction[8],
+            f=instruction[7], no=instruction[6],
+            out=aluout, zr=zr, ng=ng);
+        
+        // outM 就是 ALU 的输出，但只有 C 指令且 dest 包含 M，也就是 d3 == 1 时，writeM 才为 1
+        Or16(a=aluout, b=false, out=outM);
+        And(a=instruction[15], b=instruction[3], out=writeM);
+
+        // ALU 结果 为 0 时 zr=1，结果为负数时 ng=1
+        // 任何 jump 操作都是跳转到 A 寄存器中存储的地址
+        // 跳转成立，PC = A，否则 PC++
+        And(a=instruction[2], b=ng, out=jlt);
+        And(a=instruction[1], b=zr, out=jeq);
+
+        Not(in=ng, out=notng);
+        And(a=instruction[0], b=notng, out=ge);
+        Not(in=zr, out=notzr);
+        And(a=notzr, b=ge, out=jgt);
+
+        Or(a=jlt, b=jeq, out=jlteq);
+        Or(a=jlteq, b=jgt, out=jump);
+        And(a=instruction[15], b=jump, out=loadPC);
+
+        PC(in=Aout, load=loadPC, inc=true, reset=reset, out[0..14]=pc);
 }
