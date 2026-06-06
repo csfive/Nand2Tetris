@@ -189,10 +189,6 @@ class SymbolTable:
 # =========================
 # Main Program
 # =========================
-def to_16_bit_binary(value):
-    return format(value, "016b")
-
-
 def first_pass(input_file, symbol_table):
     """Add labels to the symbol table. Generates no code."""
     parser = Parser(input_file)
@@ -233,7 +229,7 @@ def second_pass(input_file, output_file, symbol_table):
                         next_variable_address += 1
                     address = symbol_table.get_address(symbol)
 
-                file.write(to_16_bit_binary(address) + "\n")
+                file.write(format(address, "016b") + "\n")
 
             elif command_type == C_COMMAND:
                 comp_bits = Code.comp(parser.comp())
