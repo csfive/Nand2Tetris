@@ -12,5 +12,8 @@
     "vitepress": "^2.0.0-alpha.17",
     "vitepress-theme-flexoki": "^0.0.1"
   },
-  "prettier": "@mancuoj/prettier-config"
+  "prettier": "@mancuoj/prettier-config",
+  "dependencies": {
+    "vitepress-plugin-pdf": "^0.2.0"
+  }
 }

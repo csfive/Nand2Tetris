@@ -2,6 +2,7 @@ import { defineConfig, type DefaultTheme, type HeadConfig } from 'vitepress'
 import { chipApiLanguage } from './chip-api'
 import { hackAsmLanguage } from './hack-asm'
 import { hdlLanguage } from './hdl'
+import { pdfMarkdownPlugin } from 'vitepress-plugin-pdf'
 
 const configs = {
   lang: 'zh-CN',
@@ -33,6 +34,9 @@ export default defineConfig({
       dark: 'vitesse-dark',
     },
     languages: [hdlLanguage, chipApiLanguage, hackAsmLanguage],
+    config: (md) => {
+      md.use(pdfMarkdownPlugin)
+    },
   },
   themeConfig: {
     logo: '/logo.svg',

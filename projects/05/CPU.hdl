@@ -27,10 +27,6 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-        // A 指令: 0vvvvvvvvvvvvvvv，A = value，PC++
-        // C 指令: 111accccccdddjjj，ALU 算东西，根据 ddd 写入 A/D/M，根据 jjj 的小于/等于/大于决定是否跳转
-
-        // A 寄存器存数据也存地址
         // A 指令，直接写入
         // C 指令且 dest 包含 A，也就是 d1 == 1 时写入
         // addressM 永远来自 A，M = contents of RAM[A]
@@ -39,7 +35,6 @@ CHIP CPU {
         Or(a=isA, b=instruction[5], out=loadA);
         ARegister(in=Ain, load=loadA, out=Aout, out[0..14]=addressM);
 
-        // D 寄存器只存数据
         // C 指令且 dest 包含 D，也就是 d2 == 1 时写入
         And(a=instruction[15], b=instruction[4], out=loadD);
         DRegister(in=aluout, load=loadD, out=Dout);
@@ -54,13 +49,12 @@ CHIP CPU {
             out=aluout, zr=zr, ng=ng);
         
         // outM 就是 ALU 的输出
-        // 只有 C 指令且 dest 包含 M，也就是 d3 == 1 时，writeM 才为 1
+        // C 指令且 dest 包含 M，也就是 d3 == 1 时，writeM 才为 1
         Or16(a=aluout, b=false, out=outM);
         And(a=instruction[15], b=instruction[3], out=writeM);
 
         // ALU 结果 为 0 时 zr=1，结果为负数时 ng=1
         // 任何 jump 操作都是跳转到 A 寄存器中存储的地址
-        // 跳转成立，PC = A，否则 PC++
         And(a=instruction[2], b=ng, out=jlt);
         And(a=instruction[1], b=zr, out=jeq);
 
