@@ -1,12 +1,12 @@
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import type { Theme } from 'vitepress'
-import { enhanceAppWithPDF } from 'vitepress-plugin-pdf/client'
+import enhanceApp from 'virtual:enhance-app'
 import 'vitepress-theme-flexoki/index.css'
 import './style.css'
 
 export default {
   extends: DefaultTheme,
   enhanceApp(ctx) {
-    enhanceAppWithPDF(ctx)
+    enhanceApp(ctx)
   },
 } satisfies Theme
