@@ -4,6 +4,9 @@ import { hackAsmLanguage } from './hack-asm'
 import { hdlLanguage } from './hdl'
 import { defineConfig } from 'vitepress-tuck'
 import pdf from 'vitepress-plugin-pdf'
+import fs from 'node:fs'
+import path from 'node:path'
+import type { Plugin } from 'vite'
 
 const configs = {
   lang: 'zh-CN',
@@ -36,6 +39,9 @@ export default defineConfig({
       dark: 'vitesse-dark',
     },
     languages: [hdlLanguage, chipApiLanguage, hackAsmLanguage],
+  },
+  vite: {
+    plugins: [copyProjectPdfs()],
   },
   themeConfig: {
     logo: '/logo.svg',
@@ -118,5 +124,41 @@ function getLabel(): DefaultTheme.Config {
     lastUpdated: {
       formatOptions: { dateStyle: 'short', timeStyle: 'short' },
     },
+  }
+}
+
+function copyProjectPdfs(): Plugin {
+  let outDir = ''
+  let isSsr = false
+
+  return {
+    name: 'copy-project-pdfs',
+    configResolved(config) {
+      outDir = path.resolve(config.root, config.build.outDir)
+      isSsr = Boolean(config.build.ssr)
+    },
+    closeBundle() {
+      if (isSsr) return
+
+      const sourceDir = path.resolve(process.cwd(), 'projects')
+      const targetDir = path.resolve(outDir, 'projects')
+      copyPdfs(sourceDir, targetDir)
+    },
+  }
+}
+
+function copyPdfs(sourceDir: string, targetDir: string) {
+  if (!fs.existsSync(sourceDir)) return
+
+  for (const entry of fs.readdirSync(sourceDir, { withFileTypes: true })) {
+    const source = path.join(sourceDir, entry.name)
+    const target = path.join(targetDir, entry.name)
+
+    if (entry.isDirectory()) {
+      copyPdfs(source, target)
+    } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.pdf')) {
+      fs.mkdirSync(targetDir, { recursive: true })
+      fs.copyFileSync(source, target)
+    }
   }
 }
