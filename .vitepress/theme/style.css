@@ -2,12 +2,11 @@
   --vp-font-family-base: 'STDongGuanTi', serif;
   --vp-font-family-mono: 'DM Mono', 'STDongGuanTi', monospace;
   --vp-doc-top-height: 5rem;
-  --vp-sidebar-width: 270px;
-  --vp-layout-max-width: 100%;
+  --vp-sidebar-width: 275px;
 }
 
 .VPDoc.has-aside .content-container {
-  max-width: 100% !important;
+  max-width: 95% !important;
 }
 
 #VPSidebarNav {
