@@ -13,7 +13,6 @@ const configs = {
   title: 'Nand2Tetris',
   description: 'Building a Modern Computer From First Principles',
   repo: 'csfive/nand2tetris',
-  umamiId: '',
   chineseFont:
     'https://chinese-fonts-cdn.netlify.app/packages/stdgt/dist/%E4%B8%8A%E5%9B%BE%E4%B8%9C%E8%A7%82%E4%BD%93-%E5%B8%B8%E8%A7%84/result.css',
   googleFont:
@@ -54,12 +53,12 @@ export default defineConfig({
           { text: '03. Memory', link: '/notes/03' },
           { text: '04. Machine Language', link: '/notes/04' },
           { text: '05. Computer Architecture', link: '/notes/05' },
+          { text: '06. Assembler', link: '/notes/06' },
         ],
       },
       {
         text: 'Software',
         items: [
-          { text: '06. Assembler', link: '/notes/06' },
           { text: '07. VM I: Stack Arithmetic', link: '/notes/07' },
           { text: '08. VM II: Program Control', link: '/notes/08' },
           { text: '09. High-Level Language', link: '/notes/09' },
@@ -85,12 +84,6 @@ function getHead() {
     head.push(['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }])
     head.push(['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }])
     head.push(['link', { rel: 'stylesheet', href: configs.googleFont }])
-  }
-  if (configs.umamiId) {
-    head.push([
-      'script',
-      { defer: '', src: 'https://a.mancuoj.me/script.js', 'data-website-id': configs.umamiId },
-    ])
   }
   return head
 }
